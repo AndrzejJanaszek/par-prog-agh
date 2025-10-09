@@ -2,9 +2,10 @@
 #include<stdio.h>
 #include<time.h>
 
-#include"pomiar_czasu.h"
+#include"../pomiar_czasu/pomiar_czasu.h"
  
-const int liczba = 100000;
+const int liczba = 10000000;
+// const int liczba = 100000;
 
 int main(){
   // double day_time_io_start, day_time_io_end, day_time_ar_start, day_time_ar_end= 0;
@@ -47,7 +48,7 @@ int main(){
 
   printf("IO nl AR\n");
   printf("%lf\n", cpu_io_dif);
-  printf("%lf\n",cpu_ar_dif);
+  printf("%.15lf\n",cpu_ar_dif);
 
   // IO n AR
   // 0.015891

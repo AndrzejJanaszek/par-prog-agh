@@ -6,27 +6,27 @@ LOADER = gcc
 
 # opcje optymalizacji:
 # wersja do debugowania
-OPT = -g -DDEBUG
+# OPT = -g -DDEBUG
 # wersja zoptymalizowana do mierzenia czasu
-# OPT = -O3
+OPT = -O3
 
 # pliki naglowkowe
-#INC = -I../pomiar_czasu
+INC = -I../pomiar_czasu
 
 # biblioteki
-#LIB = -L../pomiar_czasu -lm
+LIB = -L../pomiar_czasu -lpomiar_czasu -lm
 
 # zaleznosci i komendy
-moj_program: moj_program.o pomiar_czasu.o
-	$(LOADER) $(OPT) moj_program.o pomiar_czasu.o -o moj_program $(LIB)
+moj_program: moj_program.o
+	$(LOADER) $(OPT) moj_program.o -o moj_program $(LIB)
 
 # jak uzyskac plik moj_program.o ?
-moj_program.o: moj_program.c pomiar_czasu.h
-	$(CCOMP) -c $(OPT) moj_program.c
+moj_program.o: moj_program.c ../pomiar_czasu/pomiar_czasu.h
+	$(CCOMP) -c $(OPT) $(INC) moj_program.c
 
 
-pomiar_czasu.o: pomiar_czasu.c pomiar_czasu.h
-	$(CCOMP) -c $(OPT) pomiar_czasu.c
+run:
+	./moj_program
 
 clean:
 	rm -f *.o
