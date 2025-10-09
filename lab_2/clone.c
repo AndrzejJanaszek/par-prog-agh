@@ -17,13 +17,18 @@ int zmienna_globalna=0;
 
 int funkcja_watku( void* argument )
 {
+  int *pid = (int*)argument;
+  char str[40];
+  sprintf(str, "%d", *pid);
 
   zmienna_globalna++;
 
-  /* int wynik; */
-  /* wynik=execv("./program",NULL); */
-  /* if(wynik==-1) */
-  /*   printf("Proces potomny nie wykonal programu\n"); */
+  char *const args[] = {"program", "Andrzej Janaszek", str, NULL};
+
+  int wynik; 
+  wynik=execv("./program", args); 
+  if(wynik==-1) 
+    printf("Proces potomny nie wykonal programu\n"); 
 
   return 0;
 }
@@ -41,18 +46,18 @@ int main()
     exit( 1 );
   }
 
-  inicjuj_czas();
+  // inicjuj_czas();
 
-  for(i=0;i<1000;i++){
+  // for(i=0;i<1000;i++){
 
-    pid = clone( &funkcja_watku, (void *) stos+ROZMIAR_STOSU, 
-		 CLONE_FS | CLONE_FILES | CLONE_SIGHAND | CLONE_VM, 0 );
+  pid = clone( &funkcja_watku, (void *) stos+ROZMIAR_STOSU, 
+    CLONE_FS | CLONE_FILES | CLONE_SIGHAND | CLONE_VM, &pid );
 
-    waitpid(pid, NULL, __WCLONE);
+  waitpid(pid, NULL, __WCLONE);
 
-  }
+  // }
 
-  drukuj_czas();
+  // drukuj_czas();
 
   free( stos );
 }

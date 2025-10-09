@@ -12,36 +12,34 @@ int main(){
   
   int pid, wynik, i;
 
-  inicjuj_czas();
+  // inicjuj_czas();
+    
+  pid = fork(); 			
   
-  for(i=0;i<10000;i++){
+  if(pid==0){ 			
     
-    pid = fork(); 			
-    
-    if(pid==0){ 			
-      
-      zmienna_globalna++;
+    zmienna_globalna++;
 
-      // char arg1[] = "/bin/ls";
-      // char arg2[] = ".";
-      // char* arg[] = {arg1,arg2,NULL};
-      // char* arg[] = {"/bin/ls",".",NULL};
-      // wynik=execv("/bin/ls",arg); 
-      // wynik=execv("./program",NULL); 
-      // if(wynik==-1)
-      //   printf("Proces potomny nie wykonal programu\n");
+    // char arg1[] = "/bin/ls";
+    // char arg2[] = ".";
+    char str[40];
+    sprintf(str, "%d", pid);
 
-      exit(0);
-      
-    } else {					
-      
-      wait(NULL);
-      
-    }
+    char *const args[] = {"program", "Andrzej Janaszek", str, NULL};
+    // char* arg[] = {"/bin/ls",".",NULL};
+    // wynik=execv("/bin/ls",arg); 
+    wynik=execv("./program", args); 
+    if(wynik==-1)
+      printf("Proces potomny nie wykonal programu\n");
+
+    exit(0);
     
+  } else {					
+    wait(NULL);
   }
+    
 
-  drukuj_czas();
+  // drukuj_czas();
   
 }
 

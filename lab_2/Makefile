@@ -41,5 +41,16 @@ zad5: zad5.o
 zad5.o: zad5.c ../pomiar_czasu/pomiar_czasu.h
 	$(CCOMP) -c $(OPT) zad5.c $(INC) 
 
+# -------------------------------------------------------------
+program: program.o
+	$(LOADER) $(OPT) program.o -o program
+
+program.o: program.c
+	$(LOADER) $(OPT) -c program.c -o program.o
+
+# -------------------------------------------------------------
 clean:
 	rm -f *.o fork clone zad5
+
+clean_program:
+	m -f program.0 program
