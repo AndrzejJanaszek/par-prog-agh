@@ -53,4 +53,4 @@ clean:
 	rm -f *.o fork clone zad5
 
 clean_program:
-	m -f program.0 program
+	rm -f program.o program
