@@ -17,14 +17,14 @@ int zmienna_globalna=0;
 
 int funkcja_watku( void* argument )
 {
-    int *zmienna_lokalna = (int*)argument;
+    int zmienna_lokalna = *(int*)argument;
     
     for(int i = 0; i < 100000; i++){
-        (*zmienna_lokalna)++;
+        (zmienna_lokalna)++;
         zmienna_globalna++;
     }
 
-    printf("WATEK: Wartość zmiennej lokalnej: %d\n", *zmienna_lokalna);
+    printf("WATEK: Wartość zmiennej lokalnej: %d\n", zmienna_lokalna);
     printf("WATEK: Wartość zmiennej globalnej: %d\n", zmienna_globalna);
 
   /* int wynik; */
@@ -41,7 +41,7 @@ int main()
   void * stos_1;
   void * stos_2;
   pid_t pid_1, pid_2;
-  int arg_1, arg_2;
+  int arg_1 = 0, arg_2 = 0;
   
   stos_1 = malloc( ROZMIAR_STOSU );
   stos_2 = malloc( ROZMIAR_STOSU );
