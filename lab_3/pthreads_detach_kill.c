@@ -100,7 +100,14 @@ int main()
 	pthread_cancel(tid);
 
 	//Czy watek zostaĹ zabity? Jak to sprawdziÄ?
+	// printf("zmienna wspólna: %d\n", zmienna_wspolna);
+	if( zmienna_wspolna == 0 ){
+		printf("Wątek najprawdopoodbniej został ubity\n");
+	}
+	else if (zmienna_wspolna > 1){
+		printf("Wątek najprawdopoodbniej NIE został ubity\n");
 
+	}
 	
 	// ####################################################################
 	// ####################################################################
@@ -119,6 +126,7 @@ int main()
 	pthread_attr_destroy(&attr);
 
 	printf("\twatek glowny: koniec pracy, watek odlaczony pracuje dalej\n");
+	// exit(0);
 	pthread_exit(NULL); // co stanie sie gdy uzyjemy exit(0)?
 }
 
