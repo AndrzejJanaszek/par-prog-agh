@@ -37,7 +37,11 @@ int main( int argc, char *argv[] ){
   printf("\nPodaj wysokość pojedynczego trapezu:  "); scanf("%lf", &dx);
 
   int l_w=0;
-  //printf("\nPodaj liczbę wątków:  "); scanf("%d", &l_w);
+  printf("\nPodaj liczbę wątków:  "); scanf("%d", &l_w);
+
+  // ########################### 
+  // ####### SEKWENCYJNE ####### 
+  // ########################### 
 
   printf("\nPoczatek obliczeń sekwencyjnych\n");
   t1 = czas_zegara();
@@ -48,6 +52,10 @@ int main( int argc, char *argv[] ){
   printf("\nKoniec obliczen sekwencyjnych\n");
   printf("\tCzas wykonania %lf. \tObliczona całka = %.15lf\n", t1, calka);
 
+  // ########################### 
+  // ####### RÓWNOLEGŁE ####### 
+  // ########################### 
+
   printf("\nPoczatek obliczeń równoległych (zrównoleglenie pętli)\n");
   t1 = czas_zegara();
 
@@ -56,6 +64,10 @@ int main( int argc, char *argv[] ){
   t1 = czas_zegara() - t1;
   printf("\nKoniec obliczen  równoległych (zrównoleglenie pętli) \n");
   printf("\tCzas wykonania %lf. \tObliczona całka = %.15lf\n", t1, calka);
+
+  // ############################
+  // ####### DEKOM OBSZAR ####### 
+  // ############################ 
 
   printf("\nPoczatek obliczeń równoległych (dekompozycja obszaru)\n");
   t1 = czas_zegara();
