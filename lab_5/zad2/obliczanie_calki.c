@@ -79,24 +79,3 @@ int main( int argc, char *argv[] ){
   printf("\tCzas wykonania %lf. \tObliczona całka = %.15lf\n", t1, calka);
 
 }
-
-double calka_sekw(double a, double b, double dx){
-
-  int N = ceil((b-a)/dx);
-  double dx_adjust = (b-a)/N;
-
-  printf("Obliczona liczba trapezów: N = %d, dx_adjust = %lf\n", N, dx_adjust);
-  //printf("a %lf, b %lf, n %d, dx %.12lf (dx_adjust %.12lf)\n", a, b, N, dx, dx_adjust);
-  int i;
-  double calka = 0.0;
-  for(i=0; i<N; i++){
-
-    double x1 = a + i*dx_adjust;
-    calka += 0.5*dx_adjust*(funkcja(x1)+funkcja(x1+dx_adjust));
-    //printf("i %d, x1 %lf, funkcja(x1) %lf, całka = %.15lf\n", 
-    //	   i, x1, funkcja(x1), calka);
-
-  }
-
-  return(calka);
-}
