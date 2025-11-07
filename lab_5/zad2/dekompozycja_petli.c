@@ -116,6 +116,5 @@ void* calka_fragment_petli_w(void* arg_wsk){
   pthread_mutex_lock( &muteks_calka_global );
   calka_global += calka;
   pthread_mutex_unlock( &muteks_calka_global );
-
 }
 

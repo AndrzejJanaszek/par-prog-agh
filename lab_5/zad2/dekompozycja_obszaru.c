@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<stdlib.h>
 #include<pthread.h>
 #include<math.h>
 
@@ -47,13 +48,15 @@ double calka_dekompozycja_obszaru(double a, double b, double dx, int l_w){
 
 
   //* oczekiwanie na zakończenie pracy wątków
+  void* wynik;
   for(int i = 0; i < l_w; i++){
-    pthread_join(t_ids[i], NULL);
+    pthread_join(t_ids[i], &wynik);
+    calka_suma_local += *((double*)wynik);
   }
 
-  for(int i = 0; i < l_w; i++){
-    calka_suma_local += arr[i].wynik;
-  }
+  // for(int i = 0; i < l_w; i++){
+  //   calka_suma_local += arr[i].wynik;
+  // }
 
   return(calka_suma_local);
 }
@@ -76,6 +79,10 @@ void* calka_podobszar_w(void* arg_wsk){
   double calka = calka_sekw(a_local, b_local, dx);
 
   obszar->wynik = calka;
+
+  double* ret = (double*)malloc(sizeof(double));
+  *ret = obszar->wynik;
+  pthread_exit(ret);
 }
 
 double calka_sekw(double a, double b, double dx){
