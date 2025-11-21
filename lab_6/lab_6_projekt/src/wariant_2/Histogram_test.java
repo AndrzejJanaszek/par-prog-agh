@@ -12,7 +12,7 @@ public class Histogram_test {
         System.out.println("Set image size: n (#rows), m(#kolumns)");
         int n = scanner.nextInt();
         int m = scanner.nextInt();
-        final int ILOSC_ZNAKOW = 50;
+        final int ILOSC_ZNAKOW = 8;
         Obraz obraz_1 = new Obraz(n, m, ILOSC_ZNAKOW);
 
         obraz_1.calculate_histogram();
