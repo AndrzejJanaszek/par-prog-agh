@@ -1,3 +1,5 @@
+package zad1;
+
 public class Counter {
     private long c1 = 0; private long c2 = 0;
 

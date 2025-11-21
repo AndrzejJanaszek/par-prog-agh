@@ -1,0 +1,50 @@
+package zad4;
+
+import zad1.Calka_callable;
+
+import java.util.concurrent.Callable;
+
+public class CalkaRunnable implements Runnable{
+    //public class Calka_callable{
+//
+    private double dx;
+    private double xp;
+    private double xk;
+    private int N;
+    private CalkaData data;
+
+    public CalkaRunnable(double xp, double xk, double dx, CalkaData data) {
+        this.xp = xp;
+        this.xk = xk;
+        this.N = (int) Math.ceil((xk-xp)/dx);
+        this.dx = (xk-xp)/N;
+        this.data = data;
+        System.out.println("Creating an instance of Calka_callable");
+        System.out.println("xp = " + xp + ", xk = " + xk + ", N = " + N);
+        System.out.println("dx requested = " + dx + ", dx final = " + this.dx);
+
+    }
+
+    @Override
+    public void run() {
+        compute_integral();
+    }
+
+    private double getFunction(double x) {
+        return Math.sin(x);
+    }
+
+    public double compute_integral() {
+        double calka = 0;
+        int i;
+        for(i=0; i<N; i++){
+            double x1 = xp+i*dx;
+            double x2 = x1+dx;
+            calka += ((getFunction(x1) + getFunction(x2))/2.)*dx;
+        }
+        System.out.println("Calka czastkowa: " + calka);
+        data.addRes(calka);
+        return calka;
+    }
+
+}

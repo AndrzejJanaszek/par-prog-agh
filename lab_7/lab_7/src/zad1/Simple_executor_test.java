@@ -1,3 +1,6 @@
+import zad1.Counter;
+import zad1.CounterPlus;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

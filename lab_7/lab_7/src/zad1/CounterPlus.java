@@ -1,3 +1,5 @@
+package zad1;
+
 public class CounterPlus implements Runnable {
     
   private Counter counter;
