@@ -10,15 +10,19 @@
 
 // chce czytac
 int my_read_lock_lock(cz_t* cz_p){
-  while(cz_p->l_p > 0 || cz_p->waiting_pisarze > 0){
+  pthread_mutex_lock(&cz_p->mutex);
+
+  if(cz_p->l_p > 0 || cz_p->waiting_pisarze > 0){
     cz_p->waiting_czytelnicy++;
-    printf("🟡CZYTAĆ \t\t🟥czekam\n");
+    // printf("🟡CZYTAĆ \t\t🟥czekam\n");
     pthread_cond_wait(&cz_p->czytelnicy_cond, &cz_p->mutex);
-    printf("🟡CZYTAĆ \t\t🟢NIEczekam\n");
+    // printf("🟡CZYTAĆ \t\t🟢NIEczekam\n");
     cz_p->waiting_czytelnicy--;
   }
 
   cz_p->l_c++;
+  
+  pthread_mutex_unlock(&cz_p->mutex);
   pthread_cond_signal(&cz_p->czytelnicy_cond);
 }
 
@@ -30,24 +34,32 @@ int my_read_lock_unlock(cz_t* cz_p){
   if(cz_p->l_c == 0)
     pthread_cond_signal(&cz_p->pisarze_cond);
 
+  pthread_mutex_unlock(&cz_p->mutex);
+
 }
 
 // chce pisac
 int my_write_lock_lock(cz_t* cz_p){
-  while(cz_p->l_c + cz_p->l_p > 0){
+  pthread_mutex_lock(&cz_p->mutex);
+
+  if(cz_p->l_c + cz_p->l_p > 0){
     cz_p->waiting_pisarze++;
-    printf("🔵PISAĆ \t\t🟥czekam\n");
+    // printf("🔵PISAĆ \t\t🟥czekam\n");
     pthread_cond_wait(&cz_p->pisarze_cond, &cz_p->mutex);
-    printf("🔵PISAĆ \t\t🟢NIEczekam\n");
+    // printf("🔵PISAĆ \t\t🟢NIEczekam\n");
     cz_p->waiting_pisarze--;
   }
-
   cz_p->l_p++;
+
+  pthread_mutex_unlock(&cz_p->mutex);
 }
 
 // koniec pisania
 int my_write_lock_unlock(cz_t* cz_p){
+  pthread_mutex_lock(&cz_p->mutex);
+
   cz_p->l_p--;
+  
 
   if(cz_p->waiting_czytelnicy > 0){
     pthread_cond_signal(&cz_p->czytelnicy_cond);
@@ -56,6 +68,7 @@ int my_write_lock_unlock(cz_t* cz_p){
     pthread_cond_signal(&cz_p->pisarze_cond);
   }
   
+  pthread_mutex_unlock(&cz_p->mutex);
 }
 
 void inicjuj(cz_t* cz_p){

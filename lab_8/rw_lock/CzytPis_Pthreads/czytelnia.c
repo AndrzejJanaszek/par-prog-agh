@@ -11,6 +11,7 @@
 // chce czytac
 int my_read_lock_lock(cz_t* cz_p){
   pthread_rwlock_rdlock(&cz_p->rw_lock);
+
   pthread_mutex_lock(&cz_p->mutex_cz);
   cz_p->l_c++;
   pthread_mutex_unlock(&cz_p->mutex_cz);
@@ -22,12 +23,14 @@ int my_read_lock_unlock(cz_t* cz_p){
   pthread_mutex_lock(&cz_p->mutex_cz);
   cz_p->l_c--;
   pthread_mutex_unlock(&cz_p->mutex_cz);
+
   pthread_rwlock_unlock(&cz_p->rw_lock);
 }
 
 // chce pisac
 int my_write_lock_lock(cz_t* cz_p){
   pthread_rwlock_wrlock(&cz_p->rw_lock);
+  
   pthread_mutex_lock(&cz_p->mutex_p);
   cz_p->l_p++;
   pthread_mutex_unlock(&cz_p->mutex_p);
