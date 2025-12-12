@@ -138,32 +138,44 @@ double bin_search_max_task(
   int level      
 			   )
 {
+    if(p == r)
+        return A[p];
 
+    int s = (p + r) / 2;
+
+    double left_max, right_max;
+
+    #pragma omp task default(none) shared(left_max) firstprivate(A, p, s, level)
+    {
+        left_max = bin_search_max_task(A, p, s, level + 1);
+    }
+
+    #pragma omp task default(none) shared(right_max) firstprivate(A, s, r, level)
+    {
+        right_max = bin_search_max_task(A, s + 1, r, level + 1);
+    }
+
+    #pragma omp taskwait
+
+    return (left_max > right_max ? left_max : right_max);
 
 }
 
 /********** parallel binary search (array not sorted) - openmp ***********/
 
-double bin_search_max_openmp(
-		      double *A, 
-		      int p,
-		      int k
-){
-
+double bin_search_max_openmp(double *A, int p, int k)
+{
   double a_max;
-
-#pragma omp parallel default(none) firstprivate(A,p,k) shared(a_max)
-  {
-#pragma omp single
-    { 
-#pragma omp task
+  #pragma omp parallel default(none) firstprivate(A, p, k) shared(a_max)
+    {
+      #pragma omp single
       {
-	  a_max = bin_search_max_task(A,p,k,0);
+        #pragma omp task 
+        {
+              a_max = bin_search_max_task(A, p, k, 0);
+        }
       }
-    }
   }
-  
-  return(a_max);
+#pragma omp taskwait
+  return (a_max);
 }
-
-
