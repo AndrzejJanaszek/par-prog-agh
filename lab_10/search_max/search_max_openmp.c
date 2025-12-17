@@ -145,14 +145,22 @@ double bin_search_max_task(
 
     double left_max, right_max;
 
-    #pragma omp task default(none) shared(left_max) firstprivate(A, p, s, level)
+    #pragma omp task final(level > max_level) default(none) shared(left_max) firstprivate(A, p, s, level)
     {
+      if(omp_in_final()){
+        left_max = search_max(A,p,s);
+      }else{
         left_max = bin_search_max_task(A, p, s, level + 1);
+      }
     }
-
-    #pragma omp task default(none) shared(right_max) firstprivate(A, s, r, level)
+    
+    #pragma omp task final(level > max_level) default(none) shared(right_max) firstprivate(A, s, r, level)
     {
+      if(omp_in_final()){
+        right_max = search_max(A,s+1,r);
+      }else{
         right_max = bin_search_max_task(A, s + 1, r, level + 1);
+      }
     }
 
     #pragma omp taskwait
@@ -165,6 +173,7 @@ double bin_search_max_task(
 
 double bin_search_max_openmp(double *A, int p, int k)
 {
+  omp_set_nested(1);
   double a_max;
   #pragma omp parallel default(none) firstprivate(A, p, k) shared(a_max)
     {
@@ -176,6 +185,6 @@ double bin_search_max_openmp(double *A, int p, int k)
         }
       }
   }
-#pragma omp taskwait
+
   return (a_max);
 }
